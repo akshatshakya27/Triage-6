@@ -1,0 +1,22 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: sqlite:////data/triage6.db
+    volumes:
+      - triage-data:/data
+      - ./model:/app/model:ro
+    ports:
+      - "127.0.0.1:8000:8000"
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    depends_on: [backend]
+    ports:
+      - "127.0.0.1:3000:8080"
+volumes:
+  triage-data:
